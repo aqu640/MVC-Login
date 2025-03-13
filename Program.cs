@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UsersApp.Data;
 using UsersApp.Models;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<Users, IdentityRole>(options =>
 {
@@ -24,6 +28,38 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+// 創建共享目錄
+var keyDirectory = new DirectoryInfo(@"C:\shared-keys-directory");
+if (!keyDirectory.Exists)
+{
+    keyDirectory.Create();
+}
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(keyDirectory)
+    .SetApplicationName("SharedCookieApp");
+
+// Set Cookie
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "MyAppAuth";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(24); // Cookie 有效期
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    // 設定 Cookie 路徑為根目錄
+    options.Cookie.Path = "/";
+
+    if (!keyDirectory.Exists)
+    {
+        keyDirectory.Create();
+    }
+
+    // 設定資料保護提供者
+    options.DataProtectionProvider = DataProtectionProvider.Create(keyDirectory);
+});
+
 
 var app = builder.Build();
 

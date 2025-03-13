@@ -32,6 +32,8 @@ namespace UsersApp.Controllers
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
+                    //return Redirect("https://localhost:5153/Home");
+
                 }
                 else
                 {
@@ -90,14 +92,14 @@ namespace UsersApp.Controllers
             {
                 var user = await userManager.FindByNameAsync(model.Email);
 
-                if(user == null)
+                if (user == null)
                 {
                     ModelState.AddModelError("", "Something is wrong!");
                     return View(model);
                 }
                 else
                 {
-                    return RedirectToAction("ChangePassword","Account", new {username = user.UserName});
+                    return RedirectToAction("ChangePassword", "Account", new { username = user.UserName });
                 }
             }
             return View(model);
@@ -109,16 +111,16 @@ namespace UsersApp.Controllers
             {
                 return RedirectToAction("VerifyEmail", "Account");
             }
-            return View(new ChangePasswordViewModel { Email= username });
+            return View(new ChangePasswordViewModel { Email = username });
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = await userManager.FindByNameAsync(model.Email);
-                if(user != null)
+                if (user != null)
                 {
                     var result = await userManager.RemovePasswordAsync(user);
                     if (result.Succeeded)
