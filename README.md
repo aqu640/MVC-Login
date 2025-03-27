@@ -55,6 +55,19 @@ dotnet run
 ```URL
 http://localhost:5227/swagger/index.html
 ```
+
+
+### 6. Git
+```
+git add .
+git commit -m "Integrating Login with CRUD"
+git branch -M main
+git remote add origin https://github.com/aqu640/MyDotnetWeb.git
+git push -u origin main
+git status
+git remote -v
+git push -u origin main --force
+```
 ---
 
 ## 🔍 Project Structure
