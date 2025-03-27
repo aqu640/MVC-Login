@@ -31,7 +31,7 @@ namespace UsersApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Customers");
                     //return Redirect("https://localhost:5153/Home");
 
                 }
