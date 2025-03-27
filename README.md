@@ -51,7 +51,10 @@ dotnet ef database update
 ```bash
 dotnet run
 ```
-
+### 5. Swagger
+```URL
+http://localhost:5227/swagger/index.html
+```
 ---
 
 ## 🔍 Project Structure
@@ -101,8 +104,8 @@ dotnet run
 ### 🔑 **Login Page**
 ![Login Page](https://via.placeholder.com/800x400)
 
-### 🏡 **Dashboard**
-![Dashboard](https://via.placeholder.com/800x400)
+### 🏡 **Swagger**
+![image](https://github.com/user-attachments/assets/b2d2a7c9-4be5-42dd-8389-45bca56ebedc)
 
 ### 📋 **User List**
 ![User List](https://via.placeholder.com/800x400)
